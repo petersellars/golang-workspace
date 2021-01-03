@@ -120,6 +120,39 @@ func TestDivide(t *testing.T) {
 	}
 }
 
+func TestSqrt(t *testing.T) {
+	t.Parallel()
+
+	type testCaseSqrt struct {
+		a float64
+		want float64
+		errExpected bool
+		name string
+	}
+
+	testCases := []testCaseSqrt{
+		{a: 4, want: 2, errExpected: false, name: "Sqrt of a positive returns the square root"},
+		{a: -2, want: 1, errExpected: true, name: "Sqrt of negative number is an invalid operation"},
+		{a: 0, want: 0, errExpected: false, name: "Sqrt of zero is zero"},
+		{a: 16, want: 4, errExpected: false, name: "Sqrt of 16 is 4"},
+	}
+
+	for _, tc := range testCases {
+		got, err := calculator.Sqrt(tc.a)
+		errRecieved := err != nil
+
+		if tc.errExpected != errRecieved {
+			t.Fatalf("%s\nSSqrt(%f): unexpected error status: %v",
+				tc.name, tc.a, errRecieved)
+		}
+
+		if !tc.errExpected && tc.want != got {
+			t.Errorf("%s\nSqrt(%f): want %f got %f",
+				tc.name, tc.a, tc.want, got)
+		}
+	}
+}
+
 func closeEnough(a, b, tolerance float64) bool {
 	return math.Abs(a-b) <= tolerance
 }
