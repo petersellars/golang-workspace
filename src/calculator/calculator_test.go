@@ -3,6 +3,8 @@ package calculator_test
 import (
 	"calculator"
 	"testing"
+	"math/rand"
+	"time"
 )
 
 type testCase struct {
@@ -50,6 +52,23 @@ func TestAdd(t *testing.T) {
 		if tc.want != got {
 			t.Errorf("%s\nAdd(%f, %f): want %f, got %f",
 				tc.name, tc.a, tc.b, tc.want, got)
+		}
+	}
+}
+
+func TestAddRandom(t *testing.T) {
+	t.Parallel()
+
+	rand.Seed(time.Now().UnixNano())
+
+	for i := 0; i < 10; i++ {
+		a := rand.Float64()
+		b := rand.Float64()
+		want := a + b
+		got := calculator.Add(a, b)
+		if want != got {
+			t.Fatalf("Add(%f, %f): want %f, got %f",
+				a, b, want, got)
 		}
 	}
 }
