@@ -3,6 +3,7 @@ package calculator_test
 import (
 	"calculator"
 	"testing"
+	"math"
 	"math/rand"
 	"time"
 )
@@ -66,7 +67,8 @@ func TestAddRandom(t *testing.T) {
 		b := rand.Float64()
 		want := a + b
 		got := calculator.Add(a, b)
-		if want != got {
+		// if want != got {
+		if !closeEnough(want, got, 0.00000001) {
 			t.Fatalf("Add(%f, %f): want %f, got %f",
 				a, b, want, got)
 		}
@@ -116,4 +118,8 @@ func TestDivide(t *testing.T) {
 				tc.name, tc.a, tc.b, tc.want, got)
 		}
 	}
+}
+
+func closeEnough(a, b, tolerance float64) bool {
+	return math.Abs(a-b) <= tolerance
 }
